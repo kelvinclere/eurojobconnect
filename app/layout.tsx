@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { AdsterraSocialBar } from "@/components/adsterra-social-bar";
 import { siteConfig } from "@/config/site";
 
 const siteUrl = "https://eurojobconnect.example";
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main-content" className="flex-1">{children}</main>
         <SiteFooter />
+        <AdsterraSocialBar />
       </body>
     </html>
   );

@@ -100,6 +100,10 @@ All advertising settings live in `config/site.ts`. `components/ad-slot.tsx` rend
 
 The AdSense site-verification script and account meta tag are enabled with the public publisher ID in `config/site.ts` and are emitted in the `<head>` of every generated page. The authorized-seller record is stored in `public/ads.txt` and is deployed at `/ads.txt`. These signals allow AdSense to verify the deployed site, but they do not enable live ad units: `liveMode` and `consentProviderEnabled` must remain `false` until approval and the required consent integration are complete.
 
+The Adsterra Smartlink is configured separately in `siteConfig.ads.smartlink` and is shown only in the `homeIntro` placement. It is rendered as a clearly labelled external sponsored link with `sponsored`, `nofollow`, `noopener` and `noreferrer` protections. Do not move it onto job cards, application controls, navigation or other locations where it could be mistaken for editorial or application content. Set `smartlink.enabled` to `false` to remove it immediately.
+
+The Adsterra Social Bar script is stored in `siteConfig.ads.socialBar` and mounted immediately before the closing body tag through `components/adsterra-social-bar.tsx`. It loads only when both `socialBar.enabled` and `consentProviderEnabled` are `true`. Keep `consentProviderEnabled` false until a genuine consent platform is operating and the Social Bar has been checked on mobile for overlays, accidental clicks and interference with navigation. The Adsterra popunder script is intentionally excluded because it conflicts with the site’s trust goals and AdSense popunder policy.
+
 The available placements are:
 
 - `homeIntro`
