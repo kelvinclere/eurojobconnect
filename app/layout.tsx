@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { siteConfig } from "@/config/site";
 
 const siteUrl = "https://eurojobconnect.example";
 
@@ -16,6 +17,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
+      <head>
+        <meta name="google-adsense-account" content={siteConfig.ads.publisherId} />
+        {siteConfig.ads.verificationCodeEnabled && siteConfig.ads.publisherId && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.ads.publisherId}`}
+            crossOrigin="anonymous"
+          />
+        )}
+      </head>
       <body className="min-h-full flex flex-col">
         <a href="#main-content" className="fixed left-3 top-3 z-[100] -translate-y-24 rounded-md bg-white px-4 py-2 font-semibold text-navy shadow-lg transition-transform focus:translate-y-0">Skip to content</a>
         <SiteHeader />

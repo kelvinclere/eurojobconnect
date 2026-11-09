@@ -98,6 +98,8 @@ Before activating email alerts, update the privacy notice with the provider, law
 
 All advertising settings live in `config/site.ts`. `components/ad-slot.tsx` renders labelled placeholders with reserved height to prevent layout shift.
 
+The AdSense site-verification script and account meta tag are enabled with the public publisher ID in `config/site.ts` and are emitted in the `<head>` of every generated page. The authorized-seller record is stored in `public/ads.txt` and is deployed at `/ads.txt`. These signals allow AdSense to verify the deployed site, but they do not enable live ad units: `liveMode` and `consentProviderEnabled` must remain `false` until approval and the required consent integration are complete.
+
 The available placements are:
 
 - `homeIntro`

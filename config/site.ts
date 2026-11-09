@@ -8,8 +8,9 @@ export const siteConfig = {
     rssPath: "/jobs/feed.xml",
   },
   ads: {
+    verificationCodeEnabled: true,
     liveMode: false,
-    publisherId: "",
+    publisherId: "ca-pub-1744143254797398",
     consentProviderEnabled: false,
     units: {
       homeIntro: "",
