@@ -19,13 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="h-full antialiased">
       <head>
-        <meta name="google-adsense-account" content={siteConfig.ads.publisherId} />
         {siteConfig.ads.verificationCodeEnabled && siteConfig.ads.publisherId && (
           <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.ads.publisherId}`}
             crossOrigin="anonymous"
           />
+        )}
+        {siteConfig.ads.popunder.enabled && (
+          <script src={siteConfig.ads.popunder.scriptUrl} />
         )}
       </head>
       <body className="min-h-full flex flex-col">

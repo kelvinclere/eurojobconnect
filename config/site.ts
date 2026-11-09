@@ -8,17 +8,16 @@ export const siteConfig = {
     rssPath: "/jobs/feed.xml",
   },
   ads: {
-    verificationCodeEnabled: true,
+    verificationCodeEnabled: false,
     liveMode: false,
     publisherId: "ca-pub-1744143254797398",
     consentProviderEnabled: false,
-    smartlink: {
+    popunder: {
       enabled: true,
-      placement: "homeIntro",
-      url: "https://www.profitableratecpmnetwork.com/st1v1cyqw7?key=340002a481f3d9535e6662388a997e88",
+      scriptUrl: "https://pl32275951.profitableratecpmnetwork.com/a7/fb/55/a7fb55614aa6b5704a7d0e54d8c3dbf5.js",
     },
     socialBar: {
-      enabled: false,
+      enabled: true,
       scriptUrl: "https://pl32275952.profitableratecpmnetwork.com/71/a8/83/71a8839a7c4254f71f04e5448ec150b8.js",
     },
     units: {

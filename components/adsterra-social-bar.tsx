@@ -2,9 +2,7 @@ import Script from "next/script";
 import { siteConfig } from "@/config/site";
 
 export function AdsterraSocialBar() {
-  const canLoad = siteConfig.ads.socialBar.enabled && siteConfig.ads.consentProviderEnabled;
-
-  if (!canLoad) return null;
+  if (!siteConfig.ads.socialBar.enabled) return null;
 
   return (
     <Script

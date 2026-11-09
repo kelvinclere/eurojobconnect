@@ -96,13 +96,13 @@ Before activating email alerts, update the privacy notice with the provider, law
 
 ## Advertising configuration
 
-All advertising settings live in `config/site.ts`. `components/ad-slot.tsx` renders labelled placeholders with reserved height to prevent layout shift.
+All advertising settings live in `config/site.ts`. The old Smartlink promotional card has been removed, and inactive inline ad slots render nothing rather than displaying placeholder boxes.
 
-The AdSense site-verification script and account meta tag are enabled with the public publisher ID in `config/site.ts` and are emitted in the `<head>` of every generated page. The authorized-seller record is stored in `public/ads.txt` and is deployed at `/ads.txt`. These signals allow AdSense to verify the deployed site, but they do not enable live ad units: `liveMode` and `consentProviderEnabled` must remain `false` until approval and the required consent integration are complete.
+Adsterra Popunder is enabled through `siteConfig.ads.popunder` and its script is emitted at the end of the document head. Use only one Popunder script per page. Adsterra Social Bar is enabled through `siteConfig.ads.socialBar` and mounted immediately before the closing body tag through `components/adsterra-social-bar.tsx`. Both formats load globally on the deployed site; browser privacy tools or ad blockers may prevent them from appearing.
 
-The Adsterra Smartlink is configured separately in `siteConfig.ads.smartlink` and is shown only in the `homeIntro` placement. It is rendered as a clearly labelled external sponsored link with `sponsored`, `nofollow`, `noopener` and `noreferrer` protections. Do not move it onto job cards, application controls, navigation or other locations where it could be mistaken for editorial or application content. Set `smartlink.enabled` to `false` to remove it immediately.
+The AdSense loader and account meta tag are disabled. The existing `public/ads.txt` file can remain for future use, but it does not activate AdSense display advertising.
 
-The Adsterra Social Bar script is stored in `siteConfig.ads.socialBar` and mounted immediately before the closing body tag through `components/adsterra-social-bar.tsx`. It loads only when both `socialBar.enabled` and `consentProviderEnabled` are `true`. Keep `consentProviderEnabled` false until a genuine consent platform is operating and the Social Bar has been checked on mobile for overlays, accidental clicks and interference with navigation. The Adsterra popunder script is intentionally excluded because it conflicts with the site’s trust goals and AdSense popunder policy.
+Before wider public promotion, connect a genuine consent platform appropriate for the countries being served, update the privacy notice with the final vendors and purposes, and test the Popunder and Social Bar on mobile and desktop for overlays, accidental clicks and interference with navigation.
 
 The available placements are:
 
@@ -111,15 +111,14 @@ The available placements are:
 - `contentInline`
 - `desktopSidebar`
 
-Before enabling live ads:
+Before public launch:
 
 1. Apply to the chosen advertising network and obtain approval for the production domain.
-2. Add the valid publisher ID and approved unit IDs to `config/site.ts`.
+2. Confirm the Adsterra domain and scripts are approved for the production domain.
 3. Integrate the network’s approved consent management platform (CMP).
 4. Test consent signals in every required region and document vendors and purposes in the privacy notice.
 5. Confirm ads remain clearly labelled and do not imitate jobs, navigation or editorial recommendations.
-6. Set `consentProviderEnabled: true` only after the real CMP is operating.
-7. Set `liveMode: true` only after all prior steps pass production testing.
+6. Set `consentProviderEnabled: true` after the real CMP is operating so the configuration accurately records that state.
 
 The repository intentionally does not include a decorative cookie banner. A banner by itself is not a complete consent solution.
 
