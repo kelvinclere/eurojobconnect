@@ -1,0 +1,4 @@
+import Link from "next/link";
+import { Icon } from "@/components/icons";
+import { buttonVariants } from "@/components/ui/button";
+export default function NotFound() { return <div className="container-page py-24 text-center"><span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-teal-light text-teal"><Icon name="search" size={25} /></span><p className="mt-6 text-xs font-black uppercase tracking-[.18em] text-teal">404</p><h1 className="mt-2 text-3xl font-black text-navy">We couldn’t find that page</h1><p className="mt-3 text-sm text-slate-500">The listing may have expired or the address may be incorrect.</p><div className="mt-7 flex justify-center gap-3"><Link href="/jobs" className={buttonVariants()}>Browse jobs</Link><Link href="/" className={buttonVariants({ variant: "outline" })}>Go home</Link></div></div>; }

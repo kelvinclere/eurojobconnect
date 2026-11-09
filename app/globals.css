@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f9fc;
+  --foreground: #10243e;
+  --navy: #0b2545;
+  --navy-light: #173f67;
+  --teal: #087f7a;
+  --teal-light: #e6f6f4;
+  --border: #dbe4ee;
+  --muted: #607086;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-teal: var(--teal);
+  --color-teal-light: var(--teal-light);
+  --color-line: var(--border);
+  --color-muted: var(--muted);
+  --font-sans: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: #b8e7e2; color: #0b2545; }
+
+:focus-visible {
+  outline: 3px solid rgba(8, 127, 122, .35);
+  outline-offset: 3px;
+}
+
+.container-page {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.hero-grid {
+  background-image: linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.text-balance { text-wrap: balance; }
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.skeleton { position: relative; overflow: hidden; background: #e7edf3; }
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent);
+  animation: shimmer 1.35s infinite;
+}
+
+@media (max-width: 640px) {
+  .container-page { width: min(100% - 1.25rem, 1180px); }
+}

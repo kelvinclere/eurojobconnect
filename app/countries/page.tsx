@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { countryGuides } from "@/data/guides";
+import { Icon } from "@/components/icons";
+import { AdSlot } from "@/components/ad-slot";
+
+export const metadata: Metadata = { title: "Country guides", description: "Practical guides to finding work and preparing for a move to popular European destinations." };
+export default function CountriesPage() { return <><section className="bg-navy text-white"><div className="container-page py-14 sm:py-18"><p className="text-xs font-extrabold uppercase tracking-[.16em] text-[#70d7cf]">Know before you go</p><h1 className="mt-3 max-w-2xl text-4xl font-black tracking-[-.04em]">Country guides for working in Europe</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">Understand the job market, search channels and practical checks for each destination. Always confirm immigration requirements on official government sites.</p></div></section><div className="container-page py-12"><div className="grid gap-5 sm:grid-cols-2">{countryGuides.map((c) => <Link key={c.slug} href={`/countries/${c.slug}`} className="group rounded-xl border border-line bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg"><div className="flex items-start justify-between"><span className="text-5xl">{c.flag}</span><Icon name="arrow" className="text-slate-300 group-hover:text-teal" /></div><h2 className="mt-5 text-xl font-black text-navy">Working in {c.name}</h2><p className="mt-2 text-sm leading-6 text-slate-500">{c.summary}</p><div className="mt-5 border-t border-slate-100 pt-4 text-xs font-bold text-teal">{c.focus}</div></Link>)}</div><AdSlot placement="contentInline" className="mt-8" /></div></>; }

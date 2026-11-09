@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { careerGuides } from "@/data/guides";
+import { AdSlot } from "@/components/ad-slot";
+import { Icon } from "@/components/icons";
+import { Card } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+
+export const dynamicParams = false;
+export function generateStaticParams() { return careerGuides.map((guide) => ({ slug: guide.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const { slug } = await params; const guide = careerGuides.find((g) => g.slug === slug); return guide ? { title: guide.title, description: guide.summary } : {}; }
+export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const guide = careerGuides.find((g) => g.slug === slug); if (!guide) notFound(); return <><section className="bg-navy text-white"><div className="container-page max-w-4xl py-12 sm:py-16"><Link href="/guides" className="text-xs font-bold text-slate-300 hover:text-white">← All career guides</Link><p className="mt-8 text-xs font-extrabold uppercase tracking-[.16em] text-[#70d7cf]">{guide.eyebrow} • {guide.readTime}</p><h1 className="mt-3 text-balance text-4xl font-black tracking-[-.04em] sm:text-5xl">{guide.title}</h1><p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">{guide.summary}</p></div></section><div className="container-page grid max-w-5xl gap-8 py-10 lg:grid-cols-[1fr_230px]"><article className="space-y-6">{guide.sections.map((section, i) => <div key={section.title}><Card className="p-6 sm:p-8"><span className="text-xs font-black text-teal">0{i + 1}</span><h2 className="mt-2 text-xl font-black text-navy">{section.title}</h2><p className="mt-4 text-sm leading-7 text-slate-600">{section.body}</p>{section.bullets && <ul className="mt-5 space-y-3">{section.bullets.map((bullet) => <li key={bullet} className="flex gap-3 text-sm text-slate-600"><span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-teal-light text-teal"><Icon name="check" size={12} /></span>{bullet}</li>)}</ul>}</Card>{i === 0 && <AdSlot placement="contentInline" compact className="mt-6" />}</div>)}</article><aside><div className="space-y-4 lg:sticky lg:top-24"><Card className="p-5"><h2 className="font-black text-navy">Ready to search?</h2><p className="mt-2 text-xs leading-5 text-slate-500">Use these tips when you review your next opportunity.</p><Link href="/jobs" className={buttonVariants({ className: "mt-4 w-full" })}>Browse jobs</Link></Card><AdSlot placement="desktopSidebar" compact /></div></aside></div></>; }

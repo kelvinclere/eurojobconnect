@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import { PageHeading } from "@/components/page-heading";
+import { Card } from "@/components/ui/card";
+export const metadata: Metadata = { title: "Privacy", description: "How EuroJob Connect handles local browser data and future advertising consent." };
+const sections = [
+  ["Browser-only profile and alert data", "Saved jobs, preferences and development-mode job alerts—including the email entered for an alert—are stored in your browser using localStorage. They are not sent to EuroJob Connect, do not sync between devices and may disappear when browsing data is cleared."],
+  ["Email alert provider", "Email delivery remains inactive until the owner connects a real alert provider. Once connected, the email address, selected categories and country will be sent to that provider; this notice must then name the provider, purposes, retention period and unsubscribe process."],
+  ["External websites", "Application and source links take you to third-party websites. Those organisations control their own privacy practices. Review their notices before sharing personal data."],
+  ["Advertising and consent", "Development placeholders do not set advertising cookies. Before live advertising is enabled, the owner must integrate the advertising network’s approved consent management platform, configure regional rules and update this notice with the actual vendors and purposes."],
+  ["Analytics and logs", "This static frontend does not include analytics. A production host may process routine technical logs; the owner must document the chosen hosting and analytics arrangements before launch."],
+  ["Your choices", "You can remove individual alerts on the job-alerts page or clear saved jobs, preferences and alerts from the local profile page or browser settings. Advertising choices must be handled by the approved consent platform once configured."],
+];
+export default function PrivacyPage() { return <><PageHeading eyebrow="Legal" title="Privacy notice" description="Last updated 9 November 2026. This launch template describes the current static frontend and the work required before advertising goes live." /><div className="container-page max-w-4xl py-12"><Card className="divide-y divide-slate-100 p-6 sm:p-9">{sections.map(([title, body]) => <section key={title} className="py-6 first:pt-0 last:pb-0"><h2 className="text-lg font-black text-navy">{title}</h2><p className="mt-3 text-sm leading-7 text-slate-600">{body}</p></section>)}</Card></div></>; }

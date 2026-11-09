@@ -1,0 +1,1 @@
+export default function Loading() { return <div className="container-page py-14" aria-label="Loading jobs"><div className="skeleton h-10 w-64 rounded-lg" /><div className="mt-8 grid gap-6 lg:grid-cols-[250px_1fr]"><div className="skeleton h-96 rounded-xl" /><div className="space-y-4">{[1,2,3].map((x) => <div key={x} className="skeleton h-56 rounded-xl" />)}</div></div></div>; }

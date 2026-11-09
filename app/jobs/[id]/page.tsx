@@ -1,0 +1,41 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { jobs, getJob } from "@/data/jobs";
+import { Icon } from "@/components/icons";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { SaveButton } from "@/components/save-button";
+import { AdSlot } from "@/components/ad-slot";
+import { JobCard } from "@/components/job-card";
+import { formatDate, formatSalary } from "@/lib/utils";
+
+export const dynamicParams = false;
+export function generateStaticParams() { return jobs.map((job) => ({ id: job.id })); }
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> { const { id } = await params; const job = getJob(id); if (!job) return {}; return { title: `${job.title} in ${job.city}`, description: `${job.title} opportunity with ${job.employer} in ${job.city}, ${job.country}. Review responsibilities, requirements and application details.` }; }
+
+function visaLabel(status: string) { return status === "confirmed" ? "Visa sponsorship confirmed" : status === "unavailable" ? "Visa sponsorship unavailable" : "Visa sponsorship not stated"; }
+
+export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params; const job = getJob(id); if (!job) notFound();
+  const similar = jobs.filter((item) => item.id !== job.id && (item.category === job.category || item.country === job.country)).slice(0, 2);
+  const eligibleForStructuredData = !job.isSample && new Date(`${job.closingDate}T23:59:59Z`) >= new Date();
+  const structuredData = eligibleForStructuredData ? { "@context": "https://schema.org", "@type": "JobPosting", title: job.title, description: job.description, datePosted: job.postingDate, validThrough: `${job.closingDate}T23:59:59Z`, employmentType: job.employmentType.toUpperCase().replace("-", "_"), hiringOrganization: { "@type": "Organization", name: job.employer }, jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: job.city, addressCountry: job.countryCode } } } : null;
+  return <>
+    {structuredData && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />}
+    <div className="border-b border-line bg-white"><div className="container-page py-4 text-xs text-slate-500"><Link href="/jobs" className="hover:text-teal">Jobs</Link><span className="mx-2">/</span><span>{job.category}</span><span className="mx-2">/</span><span className="text-slate-400">{job.title}</span></div></div>
+    <section className="bg-navy text-white"><div className="container-page py-10 sm:py-14"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><div className="flex flex-wrap gap-2"><Badge tone="teal" className="bg-white/10 text-[#75d9d0]">{job.category}</Badge></div><h1 className="mt-4 text-3xl font-black leading-tight tracking-[-.035em] sm:text-4xl">{job.title}</h1><p className="mt-2 text-lg font-medium text-slate-300">{job.employer}</p><div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300"><span className="flex items-center gap-1.5"><Icon name="map" size={16} />{job.city}, {job.country}</span><span className="flex items-center gap-1.5"><Icon name="briefcase" size={16} />{job.employmentType}</span><span className="flex items-center gap-1.5"><Icon name="clock" size={16} />Closes {formatDate(job.closingDate)}</span></div></div><div className="flex gap-3"><SaveButton jobId={job.id} className="border-white/20 bg-white/10 text-white hover:bg-white/20" /><a href={job.applicationUrl} target="_blank" rel="noopener noreferrer nofollow" className={buttonVariants({ size: "lg" })}>Apply on source site <Icon name="external" size={17} /></a></div></div></div></section>
+    <div className="container-page grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <article className="min-w-0 space-y-7">
+        <Card className="p-6 sm:p-8"><h2 className="text-xl font-black text-navy">About this role</h2><p className="mt-4 text-sm leading-7 text-slate-600">{job.description}</p></Card>
+        <AdSlot placement="contentInline" compact />
+        <Card className="p-6 sm:p-8"><h2 className="text-xl font-black text-navy">What you’ll do</h2><ul className="mt-5 space-y-3">{job.responsibilities.map((item) => <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600"><span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-teal-light text-teal"><Icon name="check" size={12} /></span>{item}</li>)}</ul><h2 className="mt-8 border-t border-slate-100 pt-7 text-xl font-black text-navy">What you’ll need</h2><ul className="mt-5 space-y-3">{job.requirements.map((item) => <li key={item} className="flex gap-3 text-sm leading-6 text-slate-600"><span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-teal-light text-teal"><Icon name="check" size={12} /></span>{item}</li>)}</ul></Card>
+        <Card className="p-6 sm:p-8"><div className="flex items-start gap-4"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-slate-100 text-navy"><Icon name="building" /></span><div><h2 className="text-lg font-black text-navy">About the employer</h2><p className="mt-2 text-sm leading-6 text-slate-600">This listing names <strong>{job.employer}</strong> as the employer. EuroJob Connect is not the employer or recruitment agent. Verify the organisation, vacancy and contract independently before applying.</p><a href={job.sourceUrl} target="_blank" rel="noopener noreferrer nofollow" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal hover:underline">View original source <Icon name="external" size={15} /></a></div></div></Card>
+        <div className="rounded-xl border border-teal/20 bg-teal-light/60 p-6"><h2 className="font-black text-navy">Before you apply</h2><p className="mt-2 text-sm leading-6 text-slate-600">Tailor your CV, verify the application domain and never pay for an offer or visa promise.</p><Link href="/guides/european-cv" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-teal">Read application guidance <Icon name="arrow" size={15} /></Link></div>
+      </article>
+      <aside><div className="space-y-5 lg:sticky lg:top-24"><Card className="p-5"><h2 className="font-black text-navy">Job overview</h2><dl className="mt-4 divide-y divide-slate-100 text-sm"><div className="py-3"><dt className="text-xs text-slate-400">Salary</dt><dd className="mt-1 font-bold text-navy">{formatSalary(job.salaryMin, job.salaryMax, job.currency, job.payPeriod)}</dd></div><div className="py-3"><dt className="text-xs text-slate-400">Experience</dt><dd className="mt-1 font-bold text-navy">{job.experienceLevel}</dd></div><div className="py-3"><dt className="text-xs text-slate-400">Visa sponsorship</dt><dd className="mt-1 font-bold text-navy">{visaLabel(job.visaSponsorship)}</dd></div><div className="py-3"><dt className="text-xs text-slate-400">Posted</dt><dd className="mt-1 font-bold text-navy">{formatDate(job.postingDate)}</dd></div><div className="py-3"><dt className="text-xs text-slate-400">Deadline</dt><dd className="mt-1 font-bold text-navy">{formatDate(job.closingDate)}</dd></div><div className="py-3"><dt className="text-xs text-slate-400">Last checked</dt><dd className="mt-1 font-bold text-navy">{formatDate(job.lastCheckedDate)}</dd></div></dl><a href={job.applicationUrl} target="_blank" rel="noopener noreferrer nofollow" className={buttonVariants({ className: "mt-4 w-full" })}>Apply on source site <Icon name="external" size={16} /></a></Card><AdSlot placement="desktopSidebar" compact /></div></aside>
+    </div>
+    {similar.length > 0 && <section className="border-t border-line bg-white py-12"><div className="container-page"><div className="flex items-center justify-between"><h2 className="text-2xl font-black text-navy">Similar opportunities</h2><Link href={`/jobs?category=${encodeURIComponent(job.category)}`} className="text-sm font-bold text-teal">View more</Link></div><div className="mt-6 grid gap-4 md:grid-cols-2">{similar.map((item) => <JobCard key={item.id} job={item} />)}</div></div></section>}
+  </>;
+}
