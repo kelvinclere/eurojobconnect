@@ -12,6 +12,11 @@ export const siteConfig = {
     liveMode: false,
     publisherId: "ca-pub-1744143254797398",
     consentProviderEnabled: false,
+    smartlink: {
+      enabled: true,
+      placement: "homeIntro",
+      url: "https://www.profitableratecpmnetwork.com/st1v1cyqw7?key=340002a481f3d9535e6662388a997e88",
+    },
     popunder: {
       enabled: true,
       scriptUrl: "https://pl32275951.profitableratecpmnetwork.com/a7/fb/55/a7fb55614aa6b5704a7d0e54d8c3dbf5.js",

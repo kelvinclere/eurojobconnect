@@ -96,9 +96,9 @@ Before activating email alerts, update the privacy notice with the provider, law
 
 ## Advertising configuration
 
-All advertising settings live in `config/site.ts`. The old Smartlink promotional card has been removed, and inactive inline ad slots render nothing rather than displaying placeholder boxes.
+All advertising settings live in `config/site.ts`. The Adsterra Smartlink appears only in the `homeIntro` placement as a compact, clearly labelled advertisement link. Inactive inline ad slots render nothing rather than displaying placeholder boxes.
 
-Adsterra Popunder is enabled through `siteConfig.ads.popunder` and its script is emitted at the end of the document head. Use only one Popunder script per page. Adsterra Social Bar is enabled through `siteConfig.ads.socialBar` and mounted immediately before the closing body tag through `components/adsterra-social-bar.tsx`. Both formats load globally on the deployed site; browser privacy tools or ad blockers may prevent them from appearing.
+All three Adsterra formats are enabled: Smartlink through `siteConfig.ads.smartlink`, Popunder through `siteConfig.ads.popunder`, and Social Bar through `siteConfig.ads.socialBar`. The Popunder script is emitted at the end of the document head; use only one Popunder script per page. The Social Bar is mounted immediately before the closing body tag through `components/adsterra-social-bar.tsx`. Browser privacy tools or ad blockers may prevent any of these formats from appearing.
 
 The AdSense loader and account meta tag are disabled. The existing `public/ads.txt` file can remain for future use, but it does not activate AdSense display advertising.
 
