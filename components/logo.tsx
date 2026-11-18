@@ -1,9 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "./icons";
 
 export function Logo({ inverse = false }: { inverse?: boolean }) {
-  return <Link href="/" aria-label="EuroJob Connect home" className="flex items-center gap-2.5 font-extrabold tracking-[-.03em]">
-    <span className={`grid h-9 w-9 place-items-center rounded-lg ${inverse ? "bg-white text-navy" : "bg-navy text-white"}`}><Icon name="briefcase" size={19} /></span>
-    <span className={`text-[19px] ${inverse ? "text-white" : "text-navy"}`}>EuroJob <span className={inverse ? "text-[#68d2c8]" : "text-teal"}>Connect</span></span>
+  return <Link href="/" aria-label="EuroJob Connect home" className="flex shrink-0 items-center gap-2.5 whitespace-nowrap font-extrabold tracking-[-.03em]">
+    <Image src={inverse ? "/brand/logo-mark-light.svg" : "/brand/logo-mark.svg"} alt="" width={38} height={38} priority className={inverse ? "h-10 w-10" : "h-[38px] w-[38px] rounded-[9px] shadow-sm"} />
+    <span className={`text-[19px] ${inverse ? "text-white" : "text-navy"}`}>EuroJob <span className={inverse ? "text-[#fcd34d]" : "text-teal"}>Connect</span></span>
   </Link>;
 }

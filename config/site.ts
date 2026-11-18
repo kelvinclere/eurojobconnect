@@ -1,6 +1,7 @@
 export const siteConfig = {
   name: "EuroJob Connect",
-  description: "A clearer route to opportunities across Europe.",
+  description: "Verified routes to European jobs, plus curated grants, fellowships, competitions and training for African founders, students and changemakers.",
+  // Replace both values with the production domain and a monitored inbox before submitting the site for review.
   contactEmail: "hello@eurojobconnect.example",
   baseUrl: "https://eurojobconnect.example",
   alerts: {
@@ -8,26 +9,16 @@ export const siteConfig = {
     rssPath: "/jobs/feed.xml",
   },
   ads: {
-    verificationCodeEnabled: false,
-    liveMode: false,
+    // Google AdSense is the only advertising provider. Keep `enabled: true` so Google can verify the site
+    // and so Auto ads (if switched on in the AdSense dashboard) can run. Consent for EEA, UK and Swiss
+    // visitors is handled by Google's certified CMP under AdSense → Privacy & messaging.
+    enabled: true,
     publisherId: "ca-pub-1744143254797398",
-    consentProviderEnabled: false,
-    smartlink: {
-      enabled: true,
-      placement: "homeIntro",
-      url: "https://www.profitableratecpmnetwork.com/st1v1cyqw7?key=340002a481f3d9535e6662388a997e88",
-    },
-    popunder: {
-      enabled: true,
-      scriptUrl: "https://pl32275951.profitableratecpmnetwork.com/a7/fb/55/a7fb55614aa6b5704a7d0e54d8c3dbf5.js",
-    },
-    socialBar: {
-      enabled: true,
-      scriptUrl: "https://pl32275952.profitableratecpmnetwork.com/71/a8/83/71a8839a7c4254f71f04e5448ec150b8.js",
-    },
+    // Paste manual display-unit slot IDs here after approval. Empty slots render nothing.
     units: {
       homeIntro: "",
-      jobsFeed: "",
+      feed: "",
+      inArticle: "",
       contentInline: "",
       desktopSidebar: "",
     },

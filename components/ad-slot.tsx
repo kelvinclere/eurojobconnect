@@ -1,14 +1,33 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { siteConfig, type AdPlacement } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-export function AdSlot({ placement, className, compact = false }: { placement: AdPlacement; className?: string; compact?: boolean }) {
-  const unitId = siteConfig.ads.units[placement];
-  const canLoadLive = siteConfig.ads.liveMode && Boolean(siteConfig.ads.publisherId && unitId && siteConfig.ads.consentProviderEnabled);
-  const canShowSmartlink = siteConfig.ads.smartlink.enabled && placement === siteConfig.ads.smartlink.placement;
-  if (!canLoadLive && !canShowSmartlink) return null;
+declare global {
+  interface Window { adsbygoogle?: unknown[] }
+}
 
-  return <aside aria-label="Advertisement" className={cn("flex w-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-slate-50/80 text-center", canShowSmartlink ? "min-h-[96px] p-4" : compact ? "min-h-[128px] p-4" : "min-h-[152px] p-6 sm:min-h-[180px]", className)}>
-    <span className="mb-3 text-[9px] font-bold uppercase tracking-[.18em] text-slate-400">Advertisement</span>
-    {canShowSmartlink ? <a href={siteConfig.ads.smartlink.url} target="_blank" rel="sponsored nofollow noopener noreferrer" referrerPolicy="no-referrer" className="inline-flex min-h-10 items-center justify-center rounded-lg bg-teal px-6 text-sm font-bold text-white transition-colors hover:bg-teal-dark focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-teal/25">View ad <span aria-hidden="true" className="ml-2">↗</span></a> : <div data-ad-client={siteConfig.ads.publisherId} data-ad-slot={unitId} className="min-h-[90px] w-full" />}
+/**
+ * A clearly labelled Google AdSense display unit. Renders nothing until a slot ID is configured,
+ * so the page never shows empty placeholder boxes.
+ */
+export function AdSlot({ placement, className, compact = false }: { placement: AdPlacement; className?: string; compact?: boolean }) {
+  const slot = siteConfig.ads.units[placement];
+  const active = siteConfig.ads.enabled && Boolean(siteConfig.ads.publisherId && slot);
+  const ref = useRef<HTMLModElement>(null);
+
+  useEffect(() => {
+    if (!active || !ref.current || ref.current.getAttribute("data-adsbygoogle-status")) return;
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch { /* blocked by the browser or an extension */ }
+  }, [active]);
+
+  if (!active) return null;
+
+  return <aside aria-label="Advertisement" className={cn("w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50/70 text-center", compact ? "min-h-[120px] p-3" : "min-h-[140px] p-4", className)}>
+    <span className="mb-2 block text-[9px] font-bold uppercase tracking-[.18em] text-slate-400">Advertisement</span>
+    {placement === "inArticle"
+      ? <ins ref={ref} className="adsbygoogle block" style={{ display: "block", textAlign: "center" }} data-ad-client={siteConfig.ads.publisherId} data-ad-slot={slot} data-ad-layout="in-article" data-ad-format="fluid" />
+      : <ins ref={ref} className="adsbygoogle block" style={{ display: "block" }} data-ad-client={siteConfig.ads.publisherId} data-ad-slot={slot} data-ad-format="auto" data-full-width-responsive="true" />}
   </aside>;
 }

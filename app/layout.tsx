@@ -2,32 +2,28 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { AdsterraSocialBar } from "@/components/adsterra-social-bar";
 import { siteConfig } from "@/config/site";
 
-const siteUrl = "https://eurojobconnect.example";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: { default: "EuroJob Connect | Find jobs across Europe", template: "%s | EuroJob Connect" },
-  description: "Explore European jobs, practical country guides and trusted application advice, created for job seekers in Kenya.",
-  keywords: ["jobs in Europe", "European jobs for Kenyans", "visa sponsorship jobs", "work in Europe"],
-  openGraph: { title: "EuroJob Connect", description: "A clearer route to opportunities across Europe.", type: "website", locale: "en_KE" },
+  metadataBase: new URL(siteConfig.baseUrl),
+  title: { default: "EuroJob Connect | European jobs, grants and fellowships", template: "%s | EuroJob Connect" },
+  description: siteConfig.description,
+  keywords: ["jobs in Europe", "grants for African startups", "fellowships for Africans", "scholarships 2027", "non-dilutive funding", "pitch competitions Africa"],
+  openGraph: { title: "EuroJob Connect", description: siteConfig.description, type: "website", locale: "en_GB", siteName: siteConfig.name, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "EuroJob Connect: grants, fellowships and funding opportunities" }] },
+  twitter: { card: "summary_large_image", images: ["/og-image.png"] },
+  other: siteConfig.ads.publisherId ? { "google-adsense-account": siteConfig.ads.publisherId } : undefined,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full antialiased">
       <head>
-        {siteConfig.ads.verificationCodeEnabled && siteConfig.ads.publisherId && (
+        {siteConfig.ads.enabled && siteConfig.ads.publisherId && (
           <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.ads.publisherId}`}
             crossOrigin="anonymous"
           />
-        )}
-        {siteConfig.ads.popunder.enabled && (
-          <script src={siteConfig.ads.popunder.scriptUrl} />
         )}
       </head>
       <body className="min-h-full flex flex-col">
@@ -35,7 +31,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main-content" className="flex-1">{children}</main>
         <SiteFooter />
-        <AdsterraSocialBar />
       </body>
     </html>
   );

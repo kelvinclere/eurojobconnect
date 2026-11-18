@@ -4,9 +4,27 @@ A polished, responsive static job-discovery site for people exploring work in Eu
 
 Built with Next.js 16, TypeScript, Tailwind CSS 4 and local shadcn-style UI components. The site has no backend, database, server actions, authentication or private API keys.
 
-## Important: complete before public hosting
+## Before submitting to Google AdSense
 
-The current vacancy records are unverified development content. Their visible development labels are temporarily hidden for local design review at the owner’s request. Before publishing or sharing this site publicly, replace every record with a verified, current vacancy and set `isSample: false`, or restore the visible disclosure labels and notice. Do not publish the current records as genuine vacancies.
+1. Set `baseUrl` and `contactEmail` in `config/site.ts` to the production domain and a monitored inbox. These are the only remaining placeholders.
+2. Deploy, then add the site in AdSense and request review. The loader script and `google-adsense-account` meta tag are already on every page, and `public/ads.txt` is in place.
+3. In AdSense → Privacy & messaging, publish the European regulations (GDPR) message so UK, EEA and Swiss visitors see Google's certified consent banner.
+4. After approval, either enable Auto ads or create display units and paste their slot IDs into `siteConfig.ads.units`. Empty slots render nothing.
+
+### Getting the most from AdSense after approval
+
+- **Turn on Auto ads** (Ads → By site → Edit) with *Anchor ads* and *Vignette ads* enabled. These are the highest-earning formats on mobile and are fully policy-compliant. Set *Ad load* to the middle of the slider, then raise it gradually while checking that pages still read well.
+- **Create five manual units** and paste their IDs into `siteConfig.ads.units`:
+  - `homeIntro`: a display unit below the home hero.
+  - `feed`: a responsive display unit that repeats every nine cards in every opportunity list.
+  - `inArticle`: an *In-article* unit, shown after the second and fourth sections of each guide.
+  - `contentInline`: a display unit between the listings and the editorial content.
+  - `desktopSidebar`: a display unit in the sticky sidebar on guide pages.
+- **Grow traffic.** Revenue follows pageviews. Share the country pages (`/opportunities/kenya/` and so on) and category pages in WhatsApp and Telegram groups, and submit `sitemap.xml` in Google Search Console. Every card has a share button that brings visitors back to this site rather than straight to the funder.
+- **Keep it fresh.** Add new opportunities weekly and remove closed ones. Returning visitors, saved shortlists and new content all raise earnings over time.
+- **Never** ask visitors to click ads, place ads that look like listings or buttons, or add pop-ups or redirects. These lead to limited ad serving or account suspension.
+
+Google AdSense is the only advertising provider. Do not add pop-under, social-bar, smartlink or redirect ad formats, because they conflict with AdSense policies on navigation, deceptive placement and encouraging clicks.
 
 ## Local setup
 
@@ -32,38 +50,20 @@ npx serve out
 
 Deploy the contents of `out/` to Cloudflare Pages, Netlify, GitHub Pages, an S3-compatible static host or another static hosting provider. The build uses `output: "export"` and trailing slashes in `next.config.ts`.
 
-## Updating job listings
+## Funding opportunities
 
-Listings are typed and stored in `data/jobs.ts`. Each record contains:
+Opportunities live in `data/opportunities.ts` (typed, one record per line); labels, filters and the editorial content for each category page are in `data/opportunity-meta.ts`. Routes:
 
-- ID, title, employer, country, city and category
-- employment type and experience level
-- optional salary range, currency and pay period
-- description, responsibilities and requirements
-- visa sponsorship status (`confirmed`, `unavailable` or `not stated`)
-- posting, closing and last-checked dates
-- source and application URLs
-- a sample-data marker
+- `/opportunities/`: hub with search and filters (type, applying from, hosted in UK/US/Europe, award size, audience, travel funded). Filters can be linked, e.g. `/opportunities/?from=kenya` or `?host=uk&travel=1`.
+- `/opportunities/{grants|fellowships|competitions|training}/`: category pages with tips, red flags and FAQ structured data.
+- `/opportunities/{nigeria|kenya|south-africa|ghana|rwanda|uk|us|europe}/`: country and destination landing pages (`data/opportunity-places.ts`).
+- `/saved/`: the visitor's shortlist, stored in their browser.
 
-To publish a real vacancy:
+When adding an opportunity, link to the provider's own page (not a blog repost), strip tracking parameters, and update `opportunitiesReviewedOn`. Remove closed calls during each review.
 
-1. Verify it on the employer’s official site or another authoritative source.
-2. Add a unique, URL-safe ID and complete every field accurately.
-3. Set `isSample: false` only when the visible listing is real, current and independently verified.
-4. Confirm that the source and application URLs lead to the correct vacancy—not a generic careers page.
-5. Record the date of the check in `lastCheckedDate`.
-6. Run `npm run build`, inspect the generated job page and redeploy.
+## Job listings
 
-Remove expired roles promptly or move them to a separate archive that is excluded from job search and structured data. The current sample records are intentionally labelled throughout the UI and must not be presented as verified live vacancies.
-
-### JobPosting structured data
-
-The job detail template emits `JobPosting` JSON-LD only when a record is both:
-
-- marked `isSample: false`, and
-- not past its closing date at build time.
-
-Visible page content and markup come from the same typed record. Before launch, the owner should also review Google’s current JobPosting eligibility and expiry requirements. Never mark sample, expired or unverifiable content as a live job.
+The jobs page lists official public job portals (`data/job-portals.ts`). Vacancy records in `data/jobs.ts` are published only when `isSample: false`; the current development records are never rendered. Before marking a vacancy as published, verify it on the employer's site, link the exact vacancy, and record `lastCheckedDate`. `JobPosting` structured data and the RSS feed include only published, unexpired vacancies.
 
 ## Browser profile limitations
 
@@ -93,34 +93,6 @@ The endpoint receives JSON containing `email`, `categories`, `country` and `freq
 `/jobs/feed.xml` is a build-generated RSS feed intended for the automation provider. It includes only current listings marked `isSample: false`, so sample or expired vacancies cannot trigger public alerts. “Immediate” delivery means after a verified listing is added, the static site is rebuilt and deployed, and the external service detects the new feed item.
 
 Before activating email alerts, update the privacy notice with the provider, lawful basis, retention period, unsubscribe method and international-transfer details where applicable.
-
-## Advertising configuration
-
-All advertising settings live in `config/site.ts`. The Adsterra Smartlink appears only in the `homeIntro` placement as a compact, clearly labelled advertisement link. Inactive inline ad slots render nothing rather than displaying placeholder boxes.
-
-All three Adsterra formats are enabled: Smartlink through `siteConfig.ads.smartlink`, Popunder through `siteConfig.ads.popunder`, and Social Bar through `siteConfig.ads.socialBar`. The Popunder script is emitted at the end of the document head; use only one Popunder script per page. The Social Bar is mounted immediately before the closing body tag through `components/adsterra-social-bar.tsx`. Browser privacy tools or ad blockers may prevent any of these formats from appearing.
-
-The AdSense loader and account meta tag are disabled. The existing `public/ads.txt` file can remain for future use, but it does not activate AdSense display advertising.
-
-Before wider public promotion, connect a genuine consent platform appropriate for the countries being served, update the privacy notice with the final vendors and purposes, and test the Popunder and Social Bar on mobile and desktop for overlays, accidental clicks and interference with navigation.
-
-The available placements are:
-
-- `homeIntro`
-- `jobsFeed`
-- `contentInline`
-- `desktopSidebar`
-
-Before public launch:
-
-1. Apply to the chosen advertising network and obtain approval for the production domain.
-2. Confirm the Adsterra domain and scripts are approved for the production domain.
-3. Integrate the network’s approved consent management platform (CMP).
-4. Test consent signals in every required region and document vendors and purposes in the privacy notice.
-5. Confirm ads remain clearly labelled and do not imitate jobs, navigation or editorial recommendations.
-6. Set `consentProviderEnabled: true` after the real CMP is operating so the configuration accurately records that state.
-
-The repository intentionally does not include a decorative cookie banner. A banner by itself is not a complete consent solution.
 
 ## Site configuration
 

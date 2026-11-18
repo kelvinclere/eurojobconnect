@@ -3,7 +3,7 @@ import * as React from "react";
 
 export const buttonVariants = ({ variant = "default", size = "default", className }: { variant?: "default" | "outline" | "ghost" | "light" | "danger"; size?: "default" | "sm" | "lg" | "icon"; className?: string } = {}) => cn(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-bold transition-colors disabled:pointer-events-none disabled:opacity-50",
-  variant === "default" && "bg-teal text-white shadow-sm hover:bg-[#066d69]",
+  variant === "default" && "bg-gold text-navy shadow-sm hover:bg-gold-dark",
   variant === "outline" && "border border-line bg-white text-navy hover:border-teal hover:bg-teal-light",
   variant === "ghost" && "text-navy hover:bg-slate-100",
   variant === "light" && "bg-white text-navy shadow-sm hover:bg-slate-100",

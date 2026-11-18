@@ -28,7 +28,8 @@ export type Job = {
   isSample: boolean;
 };
 
-export const jobs: Job[] = [
+// Development records. They are unverified and are never rendered: only records with `isSample: false` are published.
+const allJobs: Job[] = [
   {
     id: "home-caregiver-dublin-201", title: "Home Caregiver", employer: "Emerald Home Support", country: "Ireland", countryCode: "IE", city: "Dublin", category: "Healthcare", employmentType: "Full-time", experienceLevel: "Entry level", salaryMin: 15, salaryMax: 18, currency: "USD", payPeriod: "hour", visaSponsorship: "confirmed", postingDate: "2026-11-08", closingDate: "2026-12-19", lastCheckedDate: "2026-11-09", featured: true, isSample: true,
     description: "Provide respectful day-to-day support to older adults in their own homes, helping them remain safe, comfortable and independent.",
@@ -199,6 +200,8 @@ export const jobs: Job[] = [
   },
 ];
 
+/** Published, verified vacancies only. Sample records never reach a page, the sitemap or the RSS feed. */
+export const jobs = allJobs.filter((job) => !job.isSample);
 export const countries = Array.from(new Set(jobs.map((job) => job.country))).sort();
 export const categories = Array.from(new Set(jobs.map((job) => job.category))).sort();
 

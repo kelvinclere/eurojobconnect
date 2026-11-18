@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f9fc;
-  --foreground: #10243e;
-  --navy: #0b2545;
-  --navy-light: #173f67;
-  --teal: #087f7a;
-  --teal-light: #e6f6f4;
-  --border: #dbe4ee;
-  --muted: #607086;
+  --background: #f6faf7;
+  --foreground: #0f2e25;
+  --navy: #0f2e25;
+  --navy-light: #065f46;
+  --teal: #047857;
+  --teal-light: #e3f7ec;
+  --border: #dce8e2;
+  --muted: #5f7169;
+  --gold: #fbbf24;
+  --gold-dark: #f59e0b;
+  --gold-light: #fcd34d;
 }
 
 @theme inline {
@@ -20,6 +23,9 @@
   --color-teal-light: var(--teal-light);
   --color-line: var(--border);
   --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-light: var(--gold-light);
   --font-sans: "Inter", "Segoe UI", Arial, sans-serif;
 }
 
@@ -35,10 +41,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-::selection { background: #b8e7e2; color: #0b2545; }
+::selection { background: #a7f3d0; color: #0f2e25; }
 
 :focus-visible {
-  outline: 3px solid rgba(8, 127, 122, .35);
+  outline: 3px solid rgba(4, 120, 87, .35);
   outline-offset: 3px;
 }
 
@@ -51,6 +57,19 @@ body {
   background-image: linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
   background-size: 42px 42px;
 }
+
+/* Lively emerald brand surface used for heroes, banners and the footer. */
+.bg-brand {
+  background-color: #047857;
+  background-image: radial-gradient(circle at 85% 0%, rgba(252, 211, 77, .18), transparent 45%), linear-gradient(135deg, #065f46 0%, #047857 55%, #0f766e 100%);
+}
+.hero-grid.bg-brand {
+  background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px), radial-gradient(circle at 85% 0%, rgba(252, 211, 77, .2), transparent 45%), linear-gradient(135deg, #065f46 0%, #047857 55%, #0f766e 100%);
+  background-size: 42px 42px, 42px 42px, auto, auto;
+}
+/* Keep secondary text readable on the brand surface (but not inside white cards placed on it). */
+.bg-brand .text-slate-300:not(.bg-white .text-slate-300) { color: rgb(255 255 255 / .9); }
+.bg-brand .text-slate-400:not(.bg-white .text-slate-400) { color: rgb(255 255 255 / .75); }
 
 .text-balance { text-wrap: balance; }
 
